@@ -3,13 +3,16 @@ var ApiBuilder = require('claudia-api-builder'),
 	api = new ApiBuilder(),
 	fs = require('fs'),
 	superb = require('superb'),
+	AWS = require('aws-sdk'),
 	denodeify = require('denodeify');
 module.exports = api;
+
+var s3 = new AWS.S3({ useAccelerateEndpoint: true, signatureVersion: 'v4' });
 
 // just return the result value for synchronous processing
 api.get('/hello', function () {
 	'use strict';
-	return 'hello world';
+	return 'hello1 world';
 });
 
 // pass some arguments using the query string or headers to this
@@ -46,4 +49,29 @@ api.get('/packagejson', function () {
 api.post('/echo', function (request) {
 	'use strict';
 	return request;
+});
+
+
+
+
+/** Return Signed Url */
+api.get('/sign-url', function(request) {
+    var objectName = request.queryString.objectName;
+	var params = {
+        Bucket: "team.smart.imagine",
+        Key: 'in/'+ objectName +'/'+ (Math.floor(Math.random() * (1000000000 - 100 + 1)) + 100) +'.jpeg',
+        ContentType: 'jpeg',
+        ACL: 'public-read'
+    };
+
+	return new Promise(function(resolve, reject) {
+        s3.getSignedUrl("putObject", params, function(error, url) {
+            if (error) {
+                reject(error);
+            } else {
+                console.log(url);
+                resolve(url);
+            }
+        });
+    });
 });

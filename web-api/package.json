@@ -1,20 +1,25 @@
 {
-  "name": "web-api-test",
+  "name": "smart-imagine",
   "description": "Simple example that shows how to create WEB apis",
   "private": true,
   "files": [
     "*.js"
   ],
   "scripts": {
-    "start": "claudia create --name web-api-test --region us-east-1 --api-module web",
-    "deploy": "claudia update"
+    "start": "claudia create --name smart-imagine --region us-east-1 --api-module web",
+    "deploy": "claudia update",
+    "test": "./node_modules/.bin/jasmine-node spec"
   },
   "devDependencies": {
     "claudia": "^2.0.0"
   },
   "dependencies": {
     "claudia-api-builder": "^2.0.0",
+    "aws-sdk": "^2.6.4",
     "denodeify": "^1.2.1",
+    "express": "^4.15.3",
+    "jasmine-node": "^1.14.5",
+    "request": "^2.81.0",
     "superb": "^1.2.0"
   },
   "version": "1.0.0",
