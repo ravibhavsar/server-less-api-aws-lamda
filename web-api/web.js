@@ -57,9 +57,10 @@ api.post('/echo', function (request) {
 /** Return Signed Url */
 api.get('/sign-url', function(request) {
     var objectName = request.queryString.objectName;
+	//var fileName = (Math.floor(Math.random() * (1000000000 - 100 + 1)) + 100) +'.jpeg';
 	var params = {
         Bucket: "team.smart.imagine",
-        Key: 'in/'+ objectName +'/'+ (Math.floor(Math.random() * (1000000000 - 100 + 1)) + 100) +'.jpeg',
+        Key: 'in/'+ objectName,
         ContentType: 'jpeg',
         ACL: 'public-read'
     };
@@ -70,8 +71,11 @@ api.get('/sign-url', function(request) {
                 reject(error);
             } else {
                 console.log(url);
-                resolve(url);
+                resolve ({
+					signedUrl: url,
+				});
             }
         });
     });
+
 });
